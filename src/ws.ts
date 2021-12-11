@@ -1,13 +1,20 @@
 import ReconnectingWebSocket from "reconnecting-websocket";
 import { applyDiff, resetYDocs } from "./editors";
-import { ParserSendData } from "./pb/protobuf/parser/parser";
+import { ParserSendData, ParserToken } from "./pb/protobuf/parser/parser";
+import WS from "ws";
 
-export const ConnectWS = (host: string) => {
-  const RWS = new ReconnectingWebSocket("wss://" + host + "/api/ws/parser");
+export const ConnectWS = (host: string, token: string) => {
+  const RWS = new ReconnectingWebSocket("ws://" + host + "/api/ws/parser", [], {
+    WebSocket: WS,
+  });
 
   RWS.binaryType = "arraybuffer";
 
   RWS.onopen = () => {
+    const parserToken = ParserToken.fromJSON({ token: token });
+    const send = ParserToken.encode(parserToken).finish();
+    RWS.send(send);
+
     console.log("connected");
   };
 

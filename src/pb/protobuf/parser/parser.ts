@@ -4,6 +4,10 @@ import _m0 from "protobufjs/minimal";
 
 export const protobufPackage = "parser";
 
+export interface ParserToken {
+  token: string;
+}
+
 export interface ParserSendData {
   payload?:
     | { $case: "parserDiff"; parserDiff: ParserDiff }
@@ -27,6 +31,61 @@ export interface Description {
   hiqidashiId: string;
   content: string;
 }
+
+const baseParserToken: object = { token: "" };
+
+export const ParserToken = {
+  encode(
+    message: ParserToken,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.token !== "") {
+      writer.uint32(10).string(message.token);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): ParserToken {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseParserToken } as ParserToken;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.token = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): ParserToken {
+    const message = { ...baseParserToken } as ParserToken;
+    message.token =
+      object.token !== undefined && object.token !== null
+        ? String(object.token)
+        : "";
+    return message;
+  },
+
+  toJSON(message: ParserToken): unknown {
+    const obj: any = {};
+    message.token !== undefined && (obj.token = message.token);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<ParserToken>, I>>(
+    object: I
+  ): ParserToken {
+    const message = { ...baseParserToken } as ParserToken;
+    message.token = object.token ?? "";
+    return message;
+  },
+};
 
 const baseParserSendData: object = {};
 
