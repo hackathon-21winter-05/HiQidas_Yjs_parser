@@ -4,23 +4,141 @@ import _m0 from "protobufjs/minimal";
 
 export const protobufPackage = "yjs";
 
+export interface YjsSendData {
+  payload?:
+    | { $case: "yjsDiff"; yjsDiff: YjsDiff }
+    | { $case: "yjsDescriptions"; yjsDescriptions: YjsDescriptions };
+}
+
 export interface YjsDiff {
   hiqidashiId: string;
   diff: Uint8Array;
+}
+
+export interface YjsDescriptions {
+  descriptions: Description[];
 }
 
 export interface YjsEditDescription {
   description: Description | undefined;
 }
 
-export interface YjsEditDescriptions {
-  descriptions: Description[];
-}
-
 export interface Description {
   hiqidashiId: string;
-  description: string;
+  content: string;
 }
+
+const baseYjsSendData: object = {};
+
+export const YjsSendData = {
+  encode(
+    message: YjsSendData,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.payload?.$case === "yjsDiff") {
+      YjsDiff.encode(
+        message.payload.yjsDiff,
+        writer.uint32(10).fork()
+      ).ldelim();
+    }
+    if (message.payload?.$case === "yjsDescriptions") {
+      YjsDescriptions.encode(
+        message.payload.yjsDescriptions,
+        writer.uint32(18).fork()
+      ).ldelim();
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): YjsSendData {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseYjsSendData } as YjsSendData;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.payload = {
+            $case: "yjsDiff",
+            yjsDiff: YjsDiff.decode(reader, reader.uint32()),
+          };
+          break;
+        case 2:
+          message.payload = {
+            $case: "yjsDescriptions",
+            yjsDescriptions: YjsDescriptions.decode(reader, reader.uint32()),
+          };
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): YjsSendData {
+    const message = { ...baseYjsSendData } as YjsSendData;
+    if (object.yjsDiff !== undefined && object.yjsDiff !== null) {
+      message.payload = {
+        $case: "yjsDiff",
+        yjsDiff: YjsDiff.fromJSON(object.yjsDiff),
+      };
+    }
+    if (
+      object.yjsDescriptions !== undefined &&
+      object.yjsDescriptions !== null
+    ) {
+      message.payload = {
+        $case: "yjsDescriptions",
+        yjsDescriptions: YjsDescriptions.fromJSON(object.yjsDescriptions),
+      };
+    }
+    return message;
+  },
+
+  toJSON(message: YjsSendData): unknown {
+    const obj: any = {};
+    message.payload?.$case === "yjsDiff" &&
+      (obj.yjsDiff = message.payload?.yjsDiff
+        ? YjsDiff.toJSON(message.payload?.yjsDiff)
+        : undefined);
+    message.payload?.$case === "yjsDescriptions" &&
+      (obj.yjsDescriptions = message.payload?.yjsDescriptions
+        ? YjsDescriptions.toJSON(message.payload?.yjsDescriptions)
+        : undefined);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<YjsSendData>, I>>(
+    object: I
+  ): YjsSendData {
+    const message = { ...baseYjsSendData } as YjsSendData;
+    if (
+      object.payload?.$case === "yjsDiff" &&
+      object.payload?.yjsDiff !== undefined &&
+      object.payload?.yjsDiff !== null
+    ) {
+      message.payload = {
+        $case: "yjsDiff",
+        yjsDiff: YjsDiff.fromPartial(object.payload.yjsDiff),
+      };
+    }
+    if (
+      object.payload?.$case === "yjsDescriptions" &&
+      object.payload?.yjsDescriptions !== undefined &&
+      object.payload?.yjsDescriptions !== null
+    ) {
+      message.payload = {
+        $case: "yjsDescriptions",
+        yjsDescriptions: YjsDescriptions.fromPartial(
+          object.payload.yjsDescriptions
+        ),
+      };
+    }
+    return message;
+  },
+};
 
 const baseYjsDiff: object = { hiqidashiId: "" };
 
@@ -92,6 +210,70 @@ export const YjsDiff = {
   },
 };
 
+const baseYjsDescriptions: object = {};
+
+export const YjsDescriptions = {
+  encode(
+    message: YjsDescriptions,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    for (const v of message.descriptions) {
+      Description.encode(v!, writer.uint32(10).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): YjsDescriptions {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseYjsDescriptions } as YjsDescriptions;
+    message.descriptions = [];
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.descriptions.push(
+            Description.decode(reader, reader.uint32())
+          );
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): YjsDescriptions {
+    const message = { ...baseYjsDescriptions } as YjsDescriptions;
+    message.descriptions = (object.descriptions ?? []).map((e: any) =>
+      Description.fromJSON(e)
+    );
+    return message;
+  },
+
+  toJSON(message: YjsDescriptions): unknown {
+    const obj: any = {};
+    if (message.descriptions) {
+      obj.descriptions = message.descriptions.map((e) =>
+        e ? Description.toJSON(e) : undefined
+      );
+    } else {
+      obj.descriptions = [];
+    }
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<YjsDescriptions>, I>>(
+    object: I
+  ): YjsDescriptions {
+    const message = { ...baseYjsDescriptions } as YjsDescriptions;
+    message.descriptions =
+      object.descriptions?.map((e) => Description.fromPartial(e)) || [];
+    return message;
+  },
+};
+
 const baseYjsEditDescription: object = {};
 
 export const YjsEditDescription = {
@@ -156,71 +338,7 @@ export const YjsEditDescription = {
   },
 };
 
-const baseYjsEditDescriptions: object = {};
-
-export const YjsEditDescriptions = {
-  encode(
-    message: YjsEditDescriptions,
-    writer: _m0.Writer = _m0.Writer.create()
-  ): _m0.Writer {
-    for (const v of message.descriptions) {
-      Description.encode(v!, writer.uint32(10).fork()).ldelim();
-    }
-    return writer;
-  },
-
-  decode(input: _m0.Reader | Uint8Array, length?: number): YjsEditDescriptions {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
-    let end = length === undefined ? reader.len : reader.pos + length;
-    const message = { ...baseYjsEditDescriptions } as YjsEditDescriptions;
-    message.descriptions = [];
-    while (reader.pos < end) {
-      const tag = reader.uint32();
-      switch (tag >>> 3) {
-        case 1:
-          message.descriptions.push(
-            Description.decode(reader, reader.uint32())
-          );
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
-      }
-    }
-    return message;
-  },
-
-  fromJSON(object: any): YjsEditDescriptions {
-    const message = { ...baseYjsEditDescriptions } as YjsEditDescriptions;
-    message.descriptions = (object.descriptions ?? []).map((e: any) =>
-      Description.fromJSON(e)
-    );
-    return message;
-  },
-
-  toJSON(message: YjsEditDescriptions): unknown {
-    const obj: any = {};
-    if (message.descriptions) {
-      obj.descriptions = message.descriptions.map((e) =>
-        e ? Description.toJSON(e) : undefined
-      );
-    } else {
-      obj.descriptions = [];
-    }
-    return obj;
-  },
-
-  fromPartial<I extends Exact<DeepPartial<YjsEditDescriptions>, I>>(
-    object: I
-  ): YjsEditDescriptions {
-    const message = { ...baseYjsEditDescriptions } as YjsEditDescriptions;
-    message.descriptions =
-      object.descriptions?.map((e) => Description.fromPartial(e)) || [];
-    return message;
-  },
-};
-
-const baseDescription: object = { hiqidashiId: "", description: "" };
+const baseDescription: object = { hiqidashiId: "", content: "" };
 
 export const Description = {
   encode(
@@ -230,8 +348,8 @@ export const Description = {
     if (message.hiqidashiId !== "") {
       writer.uint32(10).string(message.hiqidashiId);
     }
-    if (message.description !== "") {
-      writer.uint32(18).string(message.description);
+    if (message.content !== "") {
+      writer.uint32(18).string(message.content);
     }
     return writer;
   },
@@ -247,7 +365,7 @@ export const Description = {
           message.hiqidashiId = reader.string();
           break;
         case 2:
-          message.description = reader.string();
+          message.content = reader.string();
           break;
         default:
           reader.skipType(tag & 7);
@@ -263,9 +381,9 @@ export const Description = {
       object.hiqidashiId !== undefined && object.hiqidashiId !== null
         ? String(object.hiqidashiId)
         : "";
-    message.description =
-      object.description !== undefined && object.description !== null
-        ? String(object.description)
+    message.content =
+      object.content !== undefined && object.content !== null
+        ? String(object.content)
         : "";
     return message;
   },
@@ -274,8 +392,7 @@ export const Description = {
     const obj: any = {};
     message.hiqidashiId !== undefined &&
       (obj.hiqidashiId = message.hiqidashiId);
-    message.description !== undefined &&
-      (obj.description = message.description);
+    message.content !== undefined && (obj.content = message.content);
     return obj;
   },
 
@@ -284,7 +401,7 @@ export const Description = {
   ): Description {
     const message = { ...baseDescription } as Description;
     message.hiqidashiId = object.hiqidashiId ?? "";
-    message.description = object.description ?? "";
+    message.content = object.content ?? "";
     return message;
   },
 };
