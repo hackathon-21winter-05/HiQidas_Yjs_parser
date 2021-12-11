@@ -1,6 +1,6 @@
 import ReconnectingWebSocket from "reconnecting-websocket";
 import { applyDiff, resetYDocs } from "./editors";
-import { YjsSendData } from "./pb/protobuf/yjs/yjs";
+import { ParserSendData } from "./pb/protobuf/parser/parser";
 
 export const ConnectWS = (host: string) => {
   const RWS = new ReconnectingWebSocket("wss://" + host + "/api/ws/parser");
@@ -20,19 +20,19 @@ export const ConnectWS = (host: string) => {
   };
 
   RWS.onmessage = (e) => {
-    const data = YjsSendData.decode(new Uint8Array(e.data));
+    const data = ParserSendData.decode(new Uint8Array(e.data));
     if (!data.payload) {
       console.log("no payload");
       return;
     }
 
     switch (data.payload.$case) {
-      case "yjsDiff":
-        applyDiff(data.payload.yjsDiff, RWS);
+      case "parserDiff":
+        applyDiff(data.payload.parserDiff, RWS);
         break;
 
-      case "yjsDescriptions":
-        resetYDocs(data.payload.yjsDescriptions.descriptions);
+      case "parserDescriptions":
+        resetYDocs(data.payload.parserDescriptions.descriptions);
         break;
 
       default:

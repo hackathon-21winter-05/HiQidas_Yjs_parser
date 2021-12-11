@@ -2,24 +2,24 @@
 import Long from "long";
 import _m0 from "protobufjs/minimal";
 
-export const protobufPackage = "yjs";
+export const protobufPackage = "parser";
 
-export interface YjsSendData {
+export interface ParserSendData {
   payload?:
-    | { $case: "yjsDiff"; yjsDiff: YjsDiff }
-    | { $case: "yjsDescriptions"; yjsDescriptions: YjsDescriptions };
+    | { $case: "parserDiff"; parserDiff: ParserDiff }
+    | { $case: "parserDescriptions"; parserDescriptions: ParserDescriptions };
 }
 
-export interface YjsDiff {
+export interface ParserDiff {
   hiqidashiId: string;
   diff: Uint8Array;
 }
 
-export interface YjsDescriptions {
+export interface ParserDescriptions {
   descriptions: Description[];
 }
 
-export interface YjsEditDescription {
+export interface ParserEditDescription {
   description: Description | undefined;
 }
 
@@ -28,45 +28,48 @@ export interface Description {
   content: string;
 }
 
-const baseYjsSendData: object = {};
+const baseParserSendData: object = {};
 
-export const YjsSendData = {
+export const ParserSendData = {
   encode(
-    message: YjsSendData,
+    message: ParserSendData,
     writer: _m0.Writer = _m0.Writer.create()
   ): _m0.Writer {
-    if (message.payload?.$case === "yjsDiff") {
-      YjsDiff.encode(
-        message.payload.yjsDiff,
+    if (message.payload?.$case === "parserDiff") {
+      ParserDiff.encode(
+        message.payload.parserDiff,
         writer.uint32(10).fork()
       ).ldelim();
     }
-    if (message.payload?.$case === "yjsDescriptions") {
-      YjsDescriptions.encode(
-        message.payload.yjsDescriptions,
+    if (message.payload?.$case === "parserDescriptions") {
+      ParserDescriptions.encode(
+        message.payload.parserDescriptions,
         writer.uint32(18).fork()
       ).ldelim();
     }
     return writer;
   },
 
-  decode(input: _m0.Reader | Uint8Array, length?: number): YjsSendData {
+  decode(input: _m0.Reader | Uint8Array, length?: number): ParserSendData {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = { ...baseYjsSendData } as YjsSendData;
+    const message = { ...baseParserSendData } as ParserSendData;
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
           message.payload = {
-            $case: "yjsDiff",
-            yjsDiff: YjsDiff.decode(reader, reader.uint32()),
+            $case: "parserDiff",
+            parserDiff: ParserDiff.decode(reader, reader.uint32()),
           };
           break;
         case 2:
           message.payload = {
-            $case: "yjsDescriptions",
-            yjsDescriptions: YjsDescriptions.decode(reader, reader.uint32()),
+            $case: "parserDescriptions",
+            parserDescriptions: ParserDescriptions.decode(
+              reader,
+              reader.uint32()
+            ),
           };
           break;
         default:
@@ -77,62 +80,64 @@ export const YjsSendData = {
     return message;
   },
 
-  fromJSON(object: any): YjsSendData {
-    const message = { ...baseYjsSendData } as YjsSendData;
-    if (object.yjsDiff !== undefined && object.yjsDiff !== null) {
+  fromJSON(object: any): ParserSendData {
+    const message = { ...baseParserSendData } as ParserSendData;
+    if (object.parserDiff !== undefined && object.parserDiff !== null) {
       message.payload = {
-        $case: "yjsDiff",
-        yjsDiff: YjsDiff.fromJSON(object.yjsDiff),
+        $case: "parserDiff",
+        parserDiff: ParserDiff.fromJSON(object.parserDiff),
       };
     }
     if (
-      object.yjsDescriptions !== undefined &&
-      object.yjsDescriptions !== null
+      object.parserDescriptions !== undefined &&
+      object.parserDescriptions !== null
     ) {
       message.payload = {
-        $case: "yjsDescriptions",
-        yjsDescriptions: YjsDescriptions.fromJSON(object.yjsDescriptions),
+        $case: "parserDescriptions",
+        parserDescriptions: ParserDescriptions.fromJSON(
+          object.parserDescriptions
+        ),
       };
     }
     return message;
   },
 
-  toJSON(message: YjsSendData): unknown {
+  toJSON(message: ParserSendData): unknown {
     const obj: any = {};
-    message.payload?.$case === "yjsDiff" &&
-      (obj.yjsDiff = message.payload?.yjsDiff
-        ? YjsDiff.toJSON(message.payload?.yjsDiff)
+    message.payload?.$case === "parserDiff" &&
+      (obj.parserDiff = message.payload?.parserDiff
+        ? ParserDiff.toJSON(message.payload?.parserDiff)
         : undefined);
-    message.payload?.$case === "yjsDescriptions" &&
-      (obj.yjsDescriptions = message.payload?.yjsDescriptions
-        ? YjsDescriptions.toJSON(message.payload?.yjsDescriptions)
+    message.payload?.$case === "parserDescriptions" &&
+      (obj.parserDescriptions = message.payload?.parserDescriptions
+        ? ParserDescriptions.toJSON(message.payload?.parserDescriptions)
         : undefined);
     return obj;
   },
 
-  fromPartial<I extends Exact<DeepPartial<YjsSendData>, I>>(
+  fromPartial<I extends Exact<DeepPartial<ParserSendData>, I>>(
     object: I
-  ): YjsSendData {
-    const message = { ...baseYjsSendData } as YjsSendData;
+  ): ParserSendData {
+    const message = { ...baseParserSendData } as ParserSendData;
     if (
-      object.payload?.$case === "yjsDiff" &&
-      object.payload?.yjsDiff !== undefined &&
-      object.payload?.yjsDiff !== null
+      object.payload?.$case === "parserDiff" &&
+      object.payload?.parserDiff !== undefined &&
+      object.payload?.parserDiff !== null
     ) {
       message.payload = {
-        $case: "yjsDiff",
-        yjsDiff: YjsDiff.fromPartial(object.payload.yjsDiff),
+        $case: "parserDiff",
+        parserDiff: ParserDiff.fromPartial(object.payload.parserDiff),
       };
     }
     if (
-      object.payload?.$case === "yjsDescriptions" &&
-      object.payload?.yjsDescriptions !== undefined &&
-      object.payload?.yjsDescriptions !== null
+      object.payload?.$case === "parserDescriptions" &&
+      object.payload?.parserDescriptions !== undefined &&
+      object.payload?.parserDescriptions !== null
     ) {
       message.payload = {
-        $case: "yjsDescriptions",
-        yjsDescriptions: YjsDescriptions.fromPartial(
-          object.payload.yjsDescriptions
+        $case: "parserDescriptions",
+        parserDescriptions: ParserDescriptions.fromPartial(
+          object.payload.parserDescriptions
         ),
       };
     }
@@ -140,11 +145,11 @@ export const YjsSendData = {
   },
 };
 
-const baseYjsDiff: object = { hiqidashiId: "" };
+const baseParserDiff: object = { hiqidashiId: "" };
 
-export const YjsDiff = {
+export const ParserDiff = {
   encode(
-    message: YjsDiff,
+    message: ParserDiff,
     writer: _m0.Writer = _m0.Writer.create()
   ): _m0.Writer {
     if (message.hiqidashiId !== "") {
@@ -156,10 +161,10 @@ export const YjsDiff = {
     return writer;
   },
 
-  decode(input: _m0.Reader | Uint8Array, length?: number): YjsDiff {
+  decode(input: _m0.Reader | Uint8Array, length?: number): ParserDiff {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = { ...baseYjsDiff } as YjsDiff;
+    const message = { ...baseParserDiff } as ParserDiff;
     message.diff = new Uint8Array();
     while (reader.pos < end) {
       const tag = reader.uint32();
@@ -178,8 +183,8 @@ export const YjsDiff = {
     return message;
   },
 
-  fromJSON(object: any): YjsDiff {
-    const message = { ...baseYjsDiff } as YjsDiff;
+  fromJSON(object: any): ParserDiff {
+    const message = { ...baseParserDiff } as ParserDiff;
     message.hiqidashiId =
       object.hiqidashiId !== undefined && object.hiqidashiId !== null
         ? String(object.hiqidashiId)
@@ -191,7 +196,7 @@ export const YjsDiff = {
     return message;
   },
 
-  toJSON(message: YjsDiff): unknown {
+  toJSON(message: ParserDiff): unknown {
     const obj: any = {};
     message.hiqidashiId !== undefined &&
       (obj.hiqidashiId = message.hiqidashiId);
@@ -202,19 +207,21 @@ export const YjsDiff = {
     return obj;
   },
 
-  fromPartial<I extends Exact<DeepPartial<YjsDiff>, I>>(object: I): YjsDiff {
-    const message = { ...baseYjsDiff } as YjsDiff;
+  fromPartial<I extends Exact<DeepPartial<ParserDiff>, I>>(
+    object: I
+  ): ParserDiff {
+    const message = { ...baseParserDiff } as ParserDiff;
     message.hiqidashiId = object.hiqidashiId ?? "";
     message.diff = object.diff ?? new Uint8Array();
     return message;
   },
 };
 
-const baseYjsDescriptions: object = {};
+const baseParserDescriptions: object = {};
 
-export const YjsDescriptions = {
+export const ParserDescriptions = {
   encode(
-    message: YjsDescriptions,
+    message: ParserDescriptions,
     writer: _m0.Writer = _m0.Writer.create()
   ): _m0.Writer {
     for (const v of message.descriptions) {
@@ -223,10 +230,10 @@ export const YjsDescriptions = {
     return writer;
   },
 
-  decode(input: _m0.Reader | Uint8Array, length?: number): YjsDescriptions {
+  decode(input: _m0.Reader | Uint8Array, length?: number): ParserDescriptions {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = { ...baseYjsDescriptions } as YjsDescriptions;
+    const message = { ...baseParserDescriptions } as ParserDescriptions;
     message.descriptions = [];
     while (reader.pos < end) {
       const tag = reader.uint32();
@@ -244,15 +251,15 @@ export const YjsDescriptions = {
     return message;
   },
 
-  fromJSON(object: any): YjsDescriptions {
-    const message = { ...baseYjsDescriptions } as YjsDescriptions;
+  fromJSON(object: any): ParserDescriptions {
+    const message = { ...baseParserDescriptions } as ParserDescriptions;
     message.descriptions = (object.descriptions ?? []).map((e: any) =>
       Description.fromJSON(e)
     );
     return message;
   },
 
-  toJSON(message: YjsDescriptions): unknown {
+  toJSON(message: ParserDescriptions): unknown {
     const obj: any = {};
     if (message.descriptions) {
       obj.descriptions = message.descriptions.map((e) =>
@@ -264,21 +271,21 @@ export const YjsDescriptions = {
     return obj;
   },
 
-  fromPartial<I extends Exact<DeepPartial<YjsDescriptions>, I>>(
+  fromPartial<I extends Exact<DeepPartial<ParserDescriptions>, I>>(
     object: I
-  ): YjsDescriptions {
-    const message = { ...baseYjsDescriptions } as YjsDescriptions;
+  ): ParserDescriptions {
+    const message = { ...baseParserDescriptions } as ParserDescriptions;
     message.descriptions =
       object.descriptions?.map((e) => Description.fromPartial(e)) || [];
     return message;
   },
 };
 
-const baseYjsEditDescription: object = {};
+const baseParserEditDescription: object = {};
 
-export const YjsEditDescription = {
+export const ParserEditDescription = {
   encode(
-    message: YjsEditDescription,
+    message: ParserEditDescription,
     writer: _m0.Writer = _m0.Writer.create()
   ): _m0.Writer {
     if (message.description !== undefined) {
@@ -290,10 +297,13 @@ export const YjsEditDescription = {
     return writer;
   },
 
-  decode(input: _m0.Reader | Uint8Array, length?: number): YjsEditDescription {
+  decode(
+    input: _m0.Reader | Uint8Array,
+    length?: number
+  ): ParserEditDescription {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = { ...baseYjsEditDescription } as YjsEditDescription;
+    const message = { ...baseParserEditDescription } as ParserEditDescription;
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -308,8 +318,8 @@ export const YjsEditDescription = {
     return message;
   },
 
-  fromJSON(object: any): YjsEditDescription {
-    const message = { ...baseYjsEditDescription } as YjsEditDescription;
+  fromJSON(object: any): ParserEditDescription {
+    const message = { ...baseParserEditDescription } as ParserEditDescription;
     message.description =
       object.description !== undefined && object.description !== null
         ? Description.fromJSON(object.description)
@@ -317,7 +327,7 @@ export const YjsEditDescription = {
     return message;
   },
 
-  toJSON(message: YjsEditDescription): unknown {
+  toJSON(message: ParserEditDescription): unknown {
     const obj: any = {};
     message.description !== undefined &&
       (obj.description = message.description
@@ -326,10 +336,10 @@ export const YjsEditDescription = {
     return obj;
   },
 
-  fromPartial<I extends Exact<DeepPartial<YjsEditDescription>, I>>(
+  fromPartial<I extends Exact<DeepPartial<ParserEditDescription>, I>>(
     object: I
-  ): YjsEditDescription {
-    const message = { ...baseYjsEditDescription } as YjsEditDescription;
+  ): ParserEditDescription {
+    const message = { ...baseParserEditDescription } as ParserEditDescription;
     message.description =
       object.description !== undefined && object.description !== null
         ? Description.fromPartial(object.description)

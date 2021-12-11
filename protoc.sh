@@ -12,6 +12,6 @@ dlDir="${sourceDir/"tree/main"/"trunk"}"
 svn export ${dlDir} ${baseDir} --force
 
 mkdir -p "${distDir}"
-protoc --plugin=./node_modules/.bin/protoc-gen-ts_proto --ts_proto_out="${distDir}" --ts_proto_opt=oneof=unions --ts_proto_opt=esModuleInterop=true ${baseDir}/yjs/*.proto
+protoc --plugin=./node_modules/.bin/protoc-gen-ts_proto --ts_proto_out="${distDir}" --ts_proto_opt=oneof=unions --ts_proto_opt=esModuleInterop=true ${baseDir}/parser/*.proto
 
 rm -rf "${baseDir}"

@@ -1,13 +1,13 @@
 import ReconnectingWebSocket from "reconnecting-websocket";
-import {
-  Description,
-  YjsDiff,
-  YjsEditDescription,
-} from "./pb/protobuf/yjs/yjs";
 import { Editor } from "@tiptap/core";
 import * as Y from "yjs";
 import StarterKit from "@tiptap/starter-kit";
 import Collaboration from "@tiptap/extension-collaboration";
+import {
+  Description,
+  ParserDiff,
+  ParserEditDescription,
+} from "./pb/protobuf/parser/parser";
 
 let editors = new Map<string, { yDoc: Y.Doc; editor: Editor }>();
 
@@ -32,18 +32,18 @@ export const resetYDocs = (descriptions: Description[]) => {
   });
 };
 
-export const applyDiff = (diff: YjsDiff, RWS: ReconnectingWebSocket) => {
+export const applyDiff = (diff: ParserDiff, RWS: ReconnectingWebSocket) => {
   const map = editors.get(diff.hiqidashiId);
   if (!map) return;
 
   Y.applyUpdate(map.yDoc, new Uint8Array(diff.diff));
 
   const newDescription = map.editor.getText();
-  const editDescription = YjsEditDescription.fromJSON({
+  const editDescription = ParserEditDescription.fromJSON({
     hiqidashiId: diff.hiqidashiId,
     content: newDescription,
   });
 
-  const send = YjsEditDescription.encode(editDescription).finish();
+  const send = ParserEditDescription.encode(editDescription).finish();
   RWS.send(send);
 };
