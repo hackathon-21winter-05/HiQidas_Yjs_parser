@@ -1,34 +1,22 @@
 import ReconnectingWebSocket from "reconnecting-websocket";
-import { Editor } from "@tiptap/core";
 import * as Y from "yjs";
-import StarterKit from "@tiptap/starter-kit";
-import Collaboration from "@tiptap/extension-collaboration";
 import {
   Description,
   ParserDiff,
   ParserEditDescription,
 } from "./pb/protobuf/parser/parser";
 
-let editors = new Map<string, { yDoc: Y.Doc; editor: Editor }>();
+let editors = new Map<string, Y.Doc>();
 
 export const resetYDocs = (descriptions: Description[]) => {
-  editors = new Map<string, { yDoc: Y.Doc; editor: Editor }>();
+  editors = new Map<string, Y.Doc>();
   descriptions.forEach((description) => {
     const yDoc = new Y.Doc();
 
-    const editor = new Editor({
-      content: description.content,
-      extensions: [
-        StarterKit.configure({
-          history: false,
-        }),
-        Collaboration.configure({
-          document: yDoc,
-        }),
-      ],
-    });
+    const yText = new Y.XmlText(description.content);
+    yDoc.getXmlFragment("default").insert(0, [yText]);
 
-    editors.set(description.hiqidashiId, { yDoc, editor });
+    editors.set(description.hiqidashiId, yDoc);
   });
 };
 
@@ -36,14 +24,16 @@ export const applyDiff = (diff: ParserDiff, RWS: ReconnectingWebSocket) => {
   const map = editors.get(diff.hiqidashiId);
   if (!map) return;
 
-  Y.applyUpdate(map.yDoc, new Uint8Array(diff.diff));
+  Y.applyUpdate(map, new Uint8Array(diff.diff));
 
-  const newDescription = map.editor.getText();
   const editDescription = ParserEditDescription.fromJSON({
-    hiqidashiId: diff.hiqidashiId,
-    content: newDescription,
+    description: {
+      hiqidashiId: diff.hiqidashiId,
+      content: map.getXmlFragment("default").toJSON().toString(),
+    },
   });
 
   const send = ParserEditDescription.encode(editDescription).finish();
-  RWS.send(send);
+  console.log(ParserEditDescription.decode(send));
+  RWS.send(new Uint8Array(send));
 };
