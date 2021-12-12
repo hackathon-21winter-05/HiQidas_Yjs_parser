@@ -27,11 +27,11 @@ export const applyDiff = (diff: ParserDiff, RWS: ReconnectingWebSocket) => {
   const state = states.get(diff.hiqidashiId);
   const ydoc = new Y.Doc();
 
-  if (state) {
-    Y.applyUpdate(ydoc, state);
-  }
-
   try {
+    if (state) {
+      Y.applyUpdate(ydoc, state);
+    }
+
     Y.applyUpdate(ydoc, new Uint8Array(diff.diff));
     const newState = Y.encodeStateAsUpdate(ydoc);
 
@@ -43,9 +43,12 @@ export const applyDiff = (diff: ParserDiff, RWS: ReconnectingWebSocket) => {
         hiqidashiId: diff.hiqidashiId,
         content: newState.toString(),
       },
+      editorId: diff.editorId,
     });
 
     const send = ParserEditDescription.encode(editDescription).finish();
     RWS.send(new Uint8Array(send));
-  } catch (e) {}
+  } catch (e) {
+    console.log(e);
+  }
 };
