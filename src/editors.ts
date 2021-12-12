@@ -25,11 +25,13 @@ export const applyDiff = (diff: ParserDiff, RWS: ReconnectingWebSocket) => {
   if (!map) return;
 
   Y.applyUpdate(map, new Uint8Array(diff.diff));
+  const state = Y.encodeStateAsUpdate(map);
 
+  // TODO: DBにバイナリが入るようになったらprotobufを再生成してtoString()を消す
   const editDescription = ParserEditDescription.fromJSON({
     description: {
       hiqidashiId: diff.hiqidashiId,
-      content: map.getXmlFragment("default").toJSON().toString(),
+      content: state.toString(),
     },
   });
 
