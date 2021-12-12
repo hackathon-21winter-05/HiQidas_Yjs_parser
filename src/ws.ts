@@ -1,5 +1,5 @@
 import ReconnectingWebSocket from "reconnecting-websocket";
-import { applyDiff, resetYDocs } from "./editors";
+import { applyDiff, resetYDocs } from "./yjs";
 import { ParserSendData, ParserToken } from "./pb/protobuf/parser/parser";
 import WS from "ws";
 
