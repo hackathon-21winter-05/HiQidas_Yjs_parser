@@ -4,9 +4,13 @@ import { ParserSendData, ParserToken } from "./pb/protobuf/parser/parser";
 import WS from "ws";
 
 export const ConnectWS = (host: string, token: string) => {
-  const RWS = new ReconnectingWebSocket("ws://" + host + "/api/ws/parser", [], {
-    WebSocket: WS,
-  });
+  const RWS = new ReconnectingWebSocket(
+    "wss://" + host + "/api/ws/parser",
+    [],
+    {
+      WebSocket: WS,
+    }
+  );
 
   RWS.binaryType = "arraybuffer";
 
