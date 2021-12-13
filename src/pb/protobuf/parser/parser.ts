@@ -17,6 +17,7 @@ export interface ParserSendData {
 export interface ParserDiff {
   hiqidashiId: string;
   diff: Uint8Array;
+  editorId: string;
 }
 
 export interface ParserDescriptions {
@@ -25,6 +26,7 @@ export interface ParserDescriptions {
 
 export interface ParserEditDescription {
   description: Description | undefined;
+  editorId: string;
 }
 
 export interface Description {
@@ -204,7 +206,7 @@ export const ParserSendData = {
   },
 };
 
-const baseParserDiff: object = { hiqidashiId: "" };
+const baseParserDiff: object = { hiqidashiId: "", editorId: "" };
 
 export const ParserDiff = {
   encode(
@@ -216,6 +218,9 @@ export const ParserDiff = {
     }
     if (message.diff.length !== 0) {
       writer.uint32(18).bytes(message.diff);
+    }
+    if (message.editorId !== "") {
+      writer.uint32(26).string(message.editorId);
     }
     return writer;
   },
@@ -233,6 +238,9 @@ export const ParserDiff = {
           break;
         case 2:
           message.diff = reader.bytes();
+          break;
+        case 3:
+          message.editorId = reader.string();
           break;
         default:
           reader.skipType(tag & 7);
@@ -252,6 +260,10 @@ export const ParserDiff = {
       object.diff !== undefined && object.diff !== null
         ? bytesFromBase64(object.diff)
         : new Uint8Array();
+    message.editorId =
+      object.editorId !== undefined && object.editorId !== null
+        ? String(object.editorId)
+        : "";
     return message;
   },
 
@@ -263,6 +275,7 @@ export const ParserDiff = {
       (obj.diff = base64FromBytes(
         message.diff !== undefined ? message.diff : new Uint8Array()
       ));
+    message.editorId !== undefined && (obj.editorId = message.editorId);
     return obj;
   },
 
@@ -272,6 +285,7 @@ export const ParserDiff = {
     const message = { ...baseParserDiff } as ParserDiff;
     message.hiqidashiId = object.hiqidashiId ?? "";
     message.diff = object.diff ?? new Uint8Array();
+    message.editorId = object.editorId ?? "";
     return message;
   },
 };
@@ -340,7 +354,7 @@ export const ParserDescriptions = {
   },
 };
 
-const baseParserEditDescription: object = {};
+const baseParserEditDescription: object = { editorId: "" };
 
 export const ParserEditDescription = {
   encode(
@@ -352,6 +366,9 @@ export const ParserEditDescription = {
         message.description,
         writer.uint32(10).fork()
       ).ldelim();
+    }
+    if (message.editorId !== "") {
+      writer.uint32(18).string(message.editorId);
     }
     return writer;
   },
@@ -369,6 +386,9 @@ export const ParserEditDescription = {
         case 1:
           message.description = Description.decode(reader, reader.uint32());
           break;
+        case 2:
+          message.editorId = reader.string();
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -383,6 +403,10 @@ export const ParserEditDescription = {
       object.description !== undefined && object.description !== null
         ? Description.fromJSON(object.description)
         : undefined;
+    message.editorId =
+      object.editorId !== undefined && object.editorId !== null
+        ? String(object.editorId)
+        : "";
     return message;
   },
 
@@ -392,6 +416,7 @@ export const ParserEditDescription = {
       (obj.description = message.description
         ? Description.toJSON(message.description)
         : undefined);
+    message.editorId !== undefined && (obj.editorId = message.editorId);
     return obj;
   },
 
@@ -403,6 +428,7 @@ export const ParserEditDescription = {
       object.description !== undefined && object.description !== null
         ? Description.fromPartial(object.description)
         : undefined;
+    message.editorId = object.editorId ?? "";
     return message;
   },
 };
