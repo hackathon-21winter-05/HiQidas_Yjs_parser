@@ -1,0 +1,5 @@
+type: runtime
+startup: npm ci
+entrypoint: npm run start
+branch:
+  main: null
