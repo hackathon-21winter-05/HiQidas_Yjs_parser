@@ -5,3 +5,4 @@ node_modules/
 dist/
 
 run.sh
+deploy_key
