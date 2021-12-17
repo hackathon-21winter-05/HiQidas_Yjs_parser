@@ -23,7 +23,7 @@
   },
   "homepage": "https://github.com/hackathon-21winter-05/HiQidas_Yjs_parser#README.md",
   "devDependencies": {
-    "@types/node": "^16.11.13",
+    "@types/node": "^16.11.14",
     "@types/ws": "^8.2.2",
     "@typescript-eslint/eslint-plugin": "^5.7.0",
     "@typescript-eslint/parser": "^5.7.0",
