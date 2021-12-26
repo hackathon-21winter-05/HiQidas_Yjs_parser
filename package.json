@@ -36,7 +36,7 @@
   "dependencies": {
     "reconnecting-websocket": "^4.4.0",
     "ts-node": "^10.4.0",
-    "ts-proto": "^1.95.0",
+    "ts-proto": "^1.96.0",
     "ws": "^8.3.0",
     "yjs": "^13.5.22"
   }
