@@ -24,6 +24,10 @@ export const ConnectWS = (host: string, token: string) => {
     console.log("error ocurred", error);
   };
 
+  WS.on("ping", (data) => {
+    WS.pong(data);
+  });
+
   WS.onmessage = (e) => {
     if (!lodash.isArrayBuffer(e.data)) return;
 
