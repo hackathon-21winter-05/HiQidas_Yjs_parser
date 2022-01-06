@@ -34,7 +34,9 @@ export interface Description {
   content: string;
 }
 
-const baseParserToken: object = { token: "" };
+function createBaseParserToken(): ParserToken {
+  return { token: "" };
+}
 
 export const ParserToken = {
   encode(
@@ -50,7 +52,7 @@ export const ParserToken = {
   decode(input: _m0.Reader | Uint8Array, length?: number): ParserToken {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = { ...baseParserToken } as ParserToken;
+    const message = createBaseParserToken();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -66,7 +68,7 @@ export const ParserToken = {
   },
 
   fromJSON(object: any): ParserToken {
-    const message = { ...baseParserToken } as ParserToken;
+    const message = createBaseParserToken();
     message.token =
       object.token !== undefined && object.token !== null
         ? String(object.token)
@@ -83,13 +85,15 @@ export const ParserToken = {
   fromPartial<I extends Exact<DeepPartial<ParserToken>, I>>(
     object: I
   ): ParserToken {
-    const message = { ...baseParserToken } as ParserToken;
+    const message = createBaseParserToken();
     message.token = object.token ?? "";
     return message;
   },
 };
 
-const baseParserSendData: object = {};
+function createBaseParserSendData(): ParserSendData {
+  return { payload: undefined };
+}
 
 export const ParserSendData = {
   encode(
@@ -114,7 +118,7 @@ export const ParserSendData = {
   decode(input: _m0.Reader | Uint8Array, length?: number): ParserSendData {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = { ...baseParserSendData } as ParserSendData;
+    const message = createBaseParserSendData();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -142,7 +146,7 @@ export const ParserSendData = {
   },
 
   fromJSON(object: any): ParserSendData {
-    const message = { ...baseParserSendData } as ParserSendData;
+    const message = createBaseParserSendData();
     if (object.parserDiff !== undefined && object.parserDiff !== null) {
       message.payload = {
         $case: "parserDiff",
@@ -179,7 +183,7 @@ export const ParserSendData = {
   fromPartial<I extends Exact<DeepPartial<ParserSendData>, I>>(
     object: I
   ): ParserSendData {
-    const message = { ...baseParserSendData } as ParserSendData;
+    const message = createBaseParserSendData();
     if (
       object.payload?.$case === "parserDiff" &&
       object.payload?.parserDiff !== undefined &&
@@ -206,7 +210,9 @@ export const ParserSendData = {
   },
 };
 
-const baseParserDiff: object = { hiqidashiId: "", editorId: "" };
+function createBaseParserDiff(): ParserDiff {
+  return { hiqidashiId: "", diff: new Uint8Array(), editorId: "" };
+}
 
 export const ParserDiff = {
   encode(
@@ -228,8 +234,7 @@ export const ParserDiff = {
   decode(input: _m0.Reader | Uint8Array, length?: number): ParserDiff {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = { ...baseParserDiff } as ParserDiff;
-    message.diff = new Uint8Array();
+    const message = createBaseParserDiff();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -251,7 +256,7 @@ export const ParserDiff = {
   },
 
   fromJSON(object: any): ParserDiff {
-    const message = { ...baseParserDiff } as ParserDiff;
+    const message = createBaseParserDiff();
     message.hiqidashiId =
       object.hiqidashiId !== undefined && object.hiqidashiId !== null
         ? String(object.hiqidashiId)
@@ -282,7 +287,7 @@ export const ParserDiff = {
   fromPartial<I extends Exact<DeepPartial<ParserDiff>, I>>(
     object: I
   ): ParserDiff {
-    const message = { ...baseParserDiff } as ParserDiff;
+    const message = createBaseParserDiff();
     message.hiqidashiId = object.hiqidashiId ?? "";
     message.diff = object.diff ?? new Uint8Array();
     message.editorId = object.editorId ?? "";
@@ -290,7 +295,9 @@ export const ParserDiff = {
   },
 };
 
-const baseParserDescriptions: object = {};
+function createBaseParserDescriptions(): ParserDescriptions {
+  return { descriptions: [] };
+}
 
 export const ParserDescriptions = {
   encode(
@@ -306,8 +313,7 @@ export const ParserDescriptions = {
   decode(input: _m0.Reader | Uint8Array, length?: number): ParserDescriptions {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = { ...baseParserDescriptions } as ParserDescriptions;
-    message.descriptions = [];
+    const message = createBaseParserDescriptions();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -325,7 +331,7 @@ export const ParserDescriptions = {
   },
 
   fromJSON(object: any): ParserDescriptions {
-    const message = { ...baseParserDescriptions } as ParserDescriptions;
+    const message = createBaseParserDescriptions();
     message.descriptions = (object.descriptions ?? []).map((e: any) =>
       Description.fromJSON(e)
     );
@@ -347,14 +353,16 @@ export const ParserDescriptions = {
   fromPartial<I extends Exact<DeepPartial<ParserDescriptions>, I>>(
     object: I
   ): ParserDescriptions {
-    const message = { ...baseParserDescriptions } as ParserDescriptions;
+    const message = createBaseParserDescriptions();
     message.descriptions =
       object.descriptions?.map((e) => Description.fromPartial(e)) || [];
     return message;
   },
 };
 
-const baseParserEditDescription: object = { editorId: "" };
+function createBaseParserEditDescription(): ParserEditDescription {
+  return { description: undefined, editorId: "" };
+}
 
 export const ParserEditDescription = {
   encode(
@@ -379,7 +387,7 @@ export const ParserEditDescription = {
   ): ParserEditDescription {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = { ...baseParserEditDescription } as ParserEditDescription;
+    const message = createBaseParserEditDescription();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -398,7 +406,7 @@ export const ParserEditDescription = {
   },
 
   fromJSON(object: any): ParserEditDescription {
-    const message = { ...baseParserEditDescription } as ParserEditDescription;
+    const message = createBaseParserEditDescription();
     message.description =
       object.description !== undefined && object.description !== null
         ? Description.fromJSON(object.description)
@@ -423,7 +431,7 @@ export const ParserEditDescription = {
   fromPartial<I extends Exact<DeepPartial<ParserEditDescription>, I>>(
     object: I
   ): ParserEditDescription {
-    const message = { ...baseParserEditDescription } as ParserEditDescription;
+    const message = createBaseParserEditDescription();
     message.description =
       object.description !== undefined && object.description !== null
         ? Description.fromPartial(object.description)
@@ -433,7 +441,9 @@ export const ParserEditDescription = {
   },
 };
 
-const baseDescription: object = { hiqidashiId: "", content: "" };
+function createBaseDescription(): Description {
+  return { hiqidashiId: "", content: "" };
+}
 
 export const Description = {
   encode(
@@ -452,7 +462,7 @@ export const Description = {
   decode(input: _m0.Reader | Uint8Array, length?: number): Description {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = { ...baseDescription } as Description;
+    const message = createBaseDescription();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -471,7 +481,7 @@ export const Description = {
   },
 
   fromJSON(object: any): Description {
-    const message = { ...baseDescription } as Description;
+    const message = createBaseDescription();
     message.hiqidashiId =
       object.hiqidashiId !== undefined && object.hiqidashiId !== null
         ? String(object.hiqidashiId)
@@ -494,7 +504,7 @@ export const Description = {
   fromPartial<I extends Exact<DeepPartial<Description>, I>>(
     object: I
   ): Description {
-    const message = { ...baseDescription } as Description;
+    const message = createBaseDescription();
     message.hiqidashiId = object.hiqidashiId ?? "";
     message.content = object.content ?? "";
     return message;

@@ -2,12 +2,12 @@
   "name": "hiqidas_yjs_parser",
   "version": "1.0.0",
   "description": "Yjs Diff Parser for HiQidas",
-  "main": "index.ts",
+  "main": "src/index.ts",
   "scripts": {
     "build": "rm -rf dist && tsc --outDir dist",
     "start": "rm -rf dist && tsc --outDir dist && node dist/index.js",
     "dev": "ts-node ./src/index.ts",
-    "gen": "bash protoc.sh",
+    "gen": "bash script/protoc.sh",
     "lint": "eslint .",
     "format": "prettier --write 'src/**/*.{ts,json}'",
     "type-check": "tsc --noEmit"
