@@ -18,6 +18,7 @@ export const ConnectWS = (host: string, token: string) => {
 
   WS.onclose = () => {
     console.log("disconnected");
+    ConnectWS(host, token);
   };
 
   WS.onerror = (error) => {
