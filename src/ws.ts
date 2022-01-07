@@ -1,36 +1,37 @@
-import ReconnectingWebSocket from "reconnecting-websocket";
 import { applyDiff, resetYDocs } from "./yjs";
 import { ParserSendData, ParserToken } from "./pb/protobuf/parser/parser";
-import WS from "ws";
+import lodash from "lodash";
+import WebSocket from "ws";
 
 export const ConnectWS = (host: string, token: string) => {
-  const RWS = new ReconnectingWebSocket(
-    "wss://" + host + "/api/ws/parser",
-    [],
-    {
-      WebSocket: WS,
-    }
-  );
+  const WS = new WebSocket("wss://" + host + "/api/ws/parser");
 
-  RWS.binaryType = "arraybuffer";
+  WS.binaryType = "arraybuffer";
 
-  RWS.onopen = () => {
+  WS.onopen = () => {
     const parserToken = ParserToken.fromJSON({ token: token });
     const send = ParserToken.encode(parserToken).finish();
-    RWS.send(send);
+    WS.send(send);
 
     console.log("connected");
   };
 
-  RWS.onclose = () => {
+  WS.onclose = () => {
     console.log("disconnected");
+    ConnectWS(host, token);
   };
 
-  RWS.onerror = (error) => {
+  WS.onerror = (error) => {
     console.log("error ocurred", error);
   };
 
-  RWS.onmessage = (e) => {
+  WS.on("ping", (data) => {
+    WS.pong(data);
+  });
+
+  WS.onmessage = (e) => {
+    if (!lodash.isArrayBuffer(e.data)) return;
+
     const data = ParserSendData.decode(new Uint8Array(e.data));
     if (!data.payload) {
       console.log("no payload");
@@ -39,7 +40,7 @@ export const ConnectWS = (host: string, token: string) => {
 
     switch (data.payload.$case) {
       case "parserDiff":
-        applyDiff(data.payload.parserDiff, RWS);
+        applyDiff(data.payload.parserDiff, WS);
         break;
 
       case "parserDescriptions":

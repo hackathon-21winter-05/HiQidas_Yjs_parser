@@ -1,4 +1,4 @@
-import ReconnectingWebSocket from "reconnecting-websocket";
+import WebSocket from "ws";
 import * as Y from "yjs";
 import {
   Description,
@@ -23,7 +23,7 @@ export const resetYDocs = (descriptions: Description[]) => {
   });
 };
 
-export const applyDiff = (diff: ParserDiff, RWS: ReconnectingWebSocket) => {
+export const applyDiff = (diff: ParserDiff, WS: WebSocket) => {
   const state = states.get(diff.hiqidashiId);
   const ydoc = new Y.Doc();
 
@@ -47,7 +47,7 @@ export const applyDiff = (diff: ParserDiff, RWS: ReconnectingWebSocket) => {
     });
 
     const send = ParserEditDescription.encode(editDescription).finish();
-    RWS.send(new Uint8Array(send));
+    WS.send(new Uint8Array(send));
   } catch (e) {
     console.log(e);
   }
