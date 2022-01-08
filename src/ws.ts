@@ -3,9 +3,9 @@ import { ParserSendData, ParserToken } from "./pb/protobuf/parser/parser";
 import lodash from "lodash";
 import WebSocket from "ws";
 
-export const ConnectWS = (host: string, token: string) => {
+export const ConnectWS = (host: string, token: string, isInsecure: boolean) => {
   const WS = new WebSocket(
-    process.env.INSECURE
+    isInsecure
       ? "ws://" + host + "/api/ws/parser"
       : "wss://" + host + "/api/ws/parser"
   );
@@ -26,7 +26,7 @@ export const ConnectWS = (host: string, token: string) => {
       "WebSocket disconnected. Reconnecting in 1 minute..."
     );
     setTimeout(() => {
-      ConnectWS(host, token);
+      ConnectWS(host, token, isInsecure);
     }, 60000);
   };
 
