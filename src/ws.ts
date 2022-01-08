@@ -18,11 +18,13 @@ export const ConnectWS = (host: string, token: string) => {
 
   WS.onclose = () => {
     console.log("disconnected");
-    ConnectWS(host, token);
+    setTimeout(() => {
+      ConnectWS(host, token);
+    }, 60000);
   };
 
   WS.onerror = (error) => {
-    console.log("error ocurred", error);
+    console.log("error ocurred\n", error);
   };
 
   WS.on("ping", (data) => {
