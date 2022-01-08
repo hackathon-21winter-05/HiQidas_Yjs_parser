@@ -4,7 +4,11 @@ import lodash from "lodash";
 import WebSocket from "ws";
 
 export const ConnectWS = (host: string, token: string) => {
-  const WS = new WebSocket("ws://" + host + "/api/ws/parser");
+  const WS = new WebSocket(
+    process.env.INSECURE
+      ? "ws://" + host + "/api/ws/parser"
+      : "wss://" + host + "/api/ws/parser"
+  );
 
   WS.binaryType = "arraybuffer";
 
