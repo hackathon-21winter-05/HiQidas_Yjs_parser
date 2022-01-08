@@ -49,6 +49,6 @@ export const applyDiff = (diff: ParserDiff, WS: WebSocket) => {
     const send = ParserEditDescription.encode(editDescription).finish();
     WS.send(new Uint8Array(send));
   } catch (e) {
-    console.log(e);
+    console.error(new Date(), "Error: failed to apply diff\n", e);
   }
 };
