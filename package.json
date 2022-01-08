@@ -6,7 +6,7 @@
   "scripts": {
     "build": "rm -rf dist && tsc --outDir dist",
     "start": "rm -rf dist && tsc --outDir dist && node dist/index.js",
-    "dev": "ts-node ./src/index.ts",
+    "dev": "ts-node src/index.ts",
     "gen": "bash script/protoc.sh",
     "lint": "eslint .",
     "format": "prettier --write 'src/**/*.{ts,json}'",
