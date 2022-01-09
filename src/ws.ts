@@ -3,8 +3,12 @@ import { ParserSendData, ParserToken } from "./pb/protobuf/parser/parser";
 import lodash from "lodash";
 import WebSocket from "ws";
 
-export const ConnectWS = (host: string, token: string) => {
-  const WS = new WebSocket("wss://" + host + "/api/ws/parser");
+export const ConnectWS = (host: string, token: string, isInsecure: boolean) => {
+  const WS = new WebSocket(
+    isInsecure
+      ? "ws://" + host + "/api/ws/parser"
+      : "wss://" + host + "/api/ws/parser"
+  );
 
   WS.binaryType = "arraybuffer";
 
@@ -13,19 +17,25 @@ export const ConnectWS = (host: string, token: string) => {
     const send = ParserToken.encode(parserToken).finish();
     WS.send(send);
 
-    console.log("connected");
+    console.log(new Date(), "WebSocket connected");
   };
 
   WS.onclose = () => {
-    console.log("disconnected");
-    ConnectWS(host, token);
+    console.log(
+      new Date(),
+      "WebSocket disconnected. Reconnecting in 1 minute..."
+    );
+    setTimeout(() => {
+      ConnectWS(host, token, isInsecure);
+    }, 60000);
   };
 
   WS.onerror = (error) => {
-    console.log("error ocurred", error);
+    console.error(new Date(), "Error: failed to connect to WebSocket\n", error);
   };
 
   WS.on("ping", (data) => {
+    console.log(new Date(), "Got ping from server");
     WS.pong(data);
   });
 
@@ -34,7 +44,7 @@ export const ConnectWS = (host: string, token: string) => {
 
     const data = ParserSendData.decode(new Uint8Array(e.data));
     if (!data.payload) {
-      console.log("no payload");
+      console.error(new Date(), "Error: no payload");
       return;
     }
 
@@ -48,7 +58,7 @@ export const ConnectWS = (host: string, token: string) => {
         break;
 
       default:
-        console.log("unknown payload");
+        console.error(new Date(), "Error: unknown payload");
     }
   };
 };
