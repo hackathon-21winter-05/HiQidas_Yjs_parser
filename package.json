@@ -29,7 +29,7 @@
     "yjs": "^13.5.27"
   },
   "devDependencies": {
-    "@types/lodash": "^4.14.178",
+    "@types/lodash": "^4.14.179",
     "@types/node": "^16.11.25",
     "@types/ws": "^8.2.2",
     "@typescript-eslint/eslint-plugin": "^5.12.0",
