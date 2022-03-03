@@ -17,7 +17,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       - name: Setup Node
         id: node
         uses: actions/setup-node@v3.0.0
@@ -39,7 +39,7 @@ jobs:
     needs: [package]
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       - name: Setup Node
         uses: actions/setup-node@v3.0.0
         with:
@@ -62,7 +62,7 @@ jobs:
     needs: [package]
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       - name: Setup Node
         uses: actions/setup-node@v3.0.0
         with:
@@ -85,7 +85,7 @@ jobs:
     needs: [package]
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       - name: Setup Node
         uses: actions/setup-node@v3.0.0
         with:
