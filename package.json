@@ -24,7 +24,7 @@
   "homepage": "https://github.com/hackathon-21winter-05/HiQidas_Yjs_parser#README.md",
   "dependencies": {
     "lodash": "^4.17.21",
-    "ts-proto": "^1.105.0",
+    "ts-proto": "^1.106.2",
     "ws": "^8.5.0",
     "yjs": "^13.5.27"
   },
