@@ -26,7 +26,7 @@
     "lodash": "^4.17.21",
     "ts-proto": "^1.106.2",
     "ws": "^8.5.0",
-    "yjs": "^13.5.27"
+    "yjs": "^13.5.33"
   },
   "devDependencies": {
     "@types/lodash": "^4.14.179",
