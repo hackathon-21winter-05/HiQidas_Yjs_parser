@@ -20,7 +20,7 @@ jobs:
         uses: actions/checkout@v3
       - name: Setup Node
         id: node
-        uses: actions/setup-node@v3.0.0
+        uses: actions/setup-node@v3.1.1
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: npm
@@ -41,7 +41,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
       - name: Setup Node
-        uses: actions/setup-node@v3.0.0
+        uses: actions/setup-node@v3.1.1
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: npm
@@ -64,7 +64,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
       - name: Setup Node
-        uses: actions/setup-node@v3.0.0
+        uses: actions/setup-node@v3.1.1
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: npm
@@ -87,7 +87,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
       - name: Setup Node
-        uses: actions/setup-node@v3.0.0
+        uses: actions/setup-node@v3.1.1
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: npm
