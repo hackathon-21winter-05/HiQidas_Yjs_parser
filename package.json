@@ -30,7 +30,7 @@
   },
   "devDependencies": {
     "@types/lodash": "^4.14.179",
-    "@types/node": "^16.11.26",
+    "@types/node": "^16.11.32",
     "@types/ws": "^8.5.1",
     "@typescript-eslint/eslint-plugin": "^5.13.0",
     "@typescript-eslint/parser": "^5.13.0",
